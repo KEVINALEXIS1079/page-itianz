@@ -1,1 +1,8 @@
-# page-itianz
+- Desarrollo completo de la Landing Page Arquitectónica para Artista 3D y VFX.
+- Motor de Scroll Personalizado: Creación de Showcase en formato Zig-Zag con efecto Parallax hiper-suave en imágenes.
+- Sistema Híbrido de Navegación de Clips: Carrusel interactivo automático para destacados y lista vertical para catálogo general.
+- Arquitectura de Modales Inmersivos: Interfaz dinámica (estilo streaming) con fondo 'backdrop-filter', soportes iframes de YouTube y Grids multimedia.
+- Fondo Atmosférico y Físicas CSS: Animación infinita espacial combinando zoom (Ken Burns) e inserción de polvo estelar geométrico en múltiples capas.
+- Sistema de Diseño UI Premium: Tema Dark-Mode absoluto con detalles en Neón Rojo, barra de navegación *sticky* inteligente y sistema responsivo completo para móviles.
+- Tipografía Corporativa: Implementación centralizada de fuente geométrica 'Garet' (vía CDN) ajustada en múltiples pesos ligeros.
+- Action Footer Extremo: Módulo masivo de captación de clientes al final del flujo del usuario.
