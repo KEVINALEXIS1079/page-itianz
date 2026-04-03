@@ -69,6 +69,7 @@ showcases.forEach(showcase => {
         }
 
         modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; 
        
         setTimeout(() => modal.classList.add('active'), 10); 
     });
@@ -76,6 +77,7 @@ showcases.forEach(showcase => {
 
 const closeModal = () => {
     modal.classList.remove('active');
+    document.body.style.overflow = ''; 
     setTimeout(() => {
         modal.style.display = 'none';
         modalBody.innerHTML = '';
