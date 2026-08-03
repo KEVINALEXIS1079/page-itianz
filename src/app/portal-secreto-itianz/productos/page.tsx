@@ -1,24 +1,62 @@
 import { PrismaClient } from "@prisma/client";
-import { createProduct } from "@/app/actions";
+import { createProduct, createCategory, deleteCategory } from "@/app/actions";
 import { AdminProductItem } from "@/components/AdminProductItem";
 
 const prisma = new PrismaClient();
 
 export default async function AdminProductos() {
-  const products = await prisma.product.findMany({ orderBy: { orderIndex: 'desc' } });
+  const products = await prisma.product.findMany({ orderBy: { orderIndex: 'desc' }, include: { category: true } });
+  const categories = await prisma.category.findMany({ orderBy: { name: 'asc' } });
 
   return (
     <div>
       <h1 className="text-3xl font-bold mb-8">Administrar Productos y Periféricos</h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Agregar Nuevo Elemento</h2>
-          <form action={createProduct} className="flex flex-col gap-4 bg-content1 p-6 rounded-xl border border-white/5">
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium">Nombre del Producto</label>
-              <input type="text" name="name" required className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+        <div className="flex flex-col gap-8">
+          {/* Formulario de Categorías */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Administrar Categorías</h2>
+            <div className="bg-content1 p-6 rounded-xl border border-white/5">
+              <form action={createCategory} className="flex gap-4 items-end mb-6">
+                <div className="flex-1 flex flex-col gap-1">
+                  <label className="text-sm font-medium">Nueva Categoría</label>
+                  <input type="text" name="name" required className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" placeholder="Ej. Monitores, Sillas..." />
+                </div>
+                <button type="submit" className="bg-primary text-white font-medium px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors">Crear</button>
+              </form>
+              
+              <div className="flex flex-wrap gap-2">
+                {categories.length === 0 ? <p className="text-default-500 text-sm">No hay categorías</p> : null}
+                {categories.map(cat => (
+                  <div key={cat.id} className="bg-default-100 flex items-center gap-2 px-3 py-1.5 rounded-full text-sm">
+                    {cat.name}
+                    <form action={async () => { "use server"; await deleteCategory(cat.id); }}>
+                      <button type="submit" className="text-danger hover:text-danger/80 font-bold ml-1">&times;</button>
+                    </form>
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
+
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Agregar Nuevo Elemento</h2>
+            <form action={createProduct} className="flex flex-col gap-4 bg-content1 p-6 rounded-xl border border-white/5">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium">Nombre del Producto</label>
+                <input type="text" name="name" required className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+              </div>
+              
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium">Categoría (Opcional)</label>
+                <select name="categoryId" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground">
+                  <option value="">-- Sin Categoría --</option>
+                  {categories.map(cat => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))}
+                </select>
+              </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1">
@@ -84,12 +122,13 @@ export default async function AdminProductos() {
             <button type="submit" className="mt-4 bg-primary text-white font-medium py-3 rounded-lg hover:bg-primary/90 transition-colors">Crear Elemento</button>
           </form>
         </div>
+        </div>
         
         <div>
           <h2 className="text-xl font-semibold mb-4">Elementos Existentes</h2>
           <div className="flex flex-col gap-4 max-h-[800px] overflow-y-auto pr-2 pb-10">
             {products.map((product) => (
-              <AdminProductItem key={product.id} product={product} />
+              <AdminProductItem key={product.id} product={product} categories={categories} />
             ))}
             {products.length === 0 && <p className="text-default-500">No hay productos.</p>}
           </div>

@@ -29,8 +29,16 @@ model Project {
   updatedAt   DateTime @updatedAt
 }
 
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
 model Product {
-  id           String   @id @default(cuid())
+  id           String    @id @default(cuid())
   name         String
   description  String?
   details      String?
@@ -39,10 +47,12 @@ model Product {
   gallery      String?
   referralCode String?
   price        Float?
-  isPeripheral Boolean  @default(false)
-  featured     Boolean  @default(false)
-  orderIndex   Int      @default(0)
-  isHidden     Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  isPeripheral Boolean   @default(false)
+  featured     Boolean   @default(false)
+  orderIndex   Int       @default(0)
+  isHidden     Boolean   @default(false)
+  categoryId   String?
+  category     Category? @relation(fields: [categoryId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }

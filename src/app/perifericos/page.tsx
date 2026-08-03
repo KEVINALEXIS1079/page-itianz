@@ -1,6 +1,8 @@
 import { PrismaClient } from '@prisma/client'
 import { ProductCard } from '@/components/ProductCard'
 
+export const dynamic = "force-dynamic";
+
 const prisma = new PrismaClient()
 
 async function getProductImage(product: any) {

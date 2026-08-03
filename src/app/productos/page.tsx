@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client'
-import { ProductCard } from '@/components/ProductCard'
+import { ProductList } from '@/components/ProductList'
+
+export const dynamic = "force-dynamic";
 
 const prisma = new PrismaClient()
 
@@ -32,6 +34,8 @@ export default async function ProductosPage() {
     resolvedImage: await getProductImage(p)
   })));
 
+  const categories = await prisma.category.findMany({ orderBy: { name: 'asc' } });
+
   return (
     <div className="min-h-screen py-32 px-5 max-w-7xl mx-auto">
       <h1 className="text-5xl font-bold mb-4 text-center">Todos los Productos</h1>
@@ -40,11 +44,7 @@ export default async function ProductosPage() {
       {products.length === 0 ? (
         <p className="text-center text-default-500">No hay productos registrados aún.</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {products.map(item => (
-            <ProductCard key={item.id} item={item} resolvedImage={item.resolvedImage} />
-          ))}
-        </div>
+        <ProductList products={products} categories={categories} />
       )}
     </div>
   );

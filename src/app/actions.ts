@@ -17,8 +17,8 @@ const httpsUrl = z.string().url("Debe ser una URL válida").refine(val => val.st
 
 const videoUrlSchema = httpsUrl.refine(val => {
   if (!val) return true;
-  return val.includes("youtube.com") || val.includes("youtu.be") || val.includes("tiktok.com");
-}, { message: "El video debe ser de YouTube o TikTok" });
+  return val.includes("youtube.com") || val.includes("youtu.be") || val.includes("tiktok.com") || val.includes("instagram.com") || val.includes("artstation.com");
+}, { message: "El enlace debe ser de YouTube, TikTok, Instagram o Artstation" });
 
 // Función auxiliar de seguridad
 const ADMIN_EMAILS = ["itianz.business@gmail.com", "bx57599@gmail.com"];
@@ -113,6 +113,22 @@ export async function deleteProject(id: string) {
   revalidatePath("/portal-secreto-itianz/proyectos");
 }
 
+export async function createCategory(formData: FormData) {
+  await requireAdmin();
+  const name = formData.get("name") as string;
+  if (!name) return;
+  await prisma.category.create({ data: { name } });
+  revalidatePath("/portal-secreto-itianz/productos");
+  revalidatePath("/productos");
+}
+
+export async function deleteCategory(id: string) {
+  await requireAdmin();
+  await prisma.category.delete({ where: { id } });
+  revalidatePath("/portal-secreto-itianz/productos");
+  revalidatePath("/productos");
+}
+
 export async function createProduct(formData: FormData) {
   await requireAdmin();
 
@@ -138,6 +154,7 @@ export async function createProduct(formData: FormData) {
   const galleryStr = galleryUrls.length > 0 ? JSON.stringify(galleryUrls) : null;
 
   const referralCode = formData.get("referralCode") as string | null;
+  const categoryId = formData.get("categoryId") as string | null;
   const priceStr = formData.get("price") as string | null;
   const price = priceStr ? parseFloat(priceStr) : null;
   const isPeripheral = formData.get("isPeripheral") === "on";
@@ -149,6 +166,7 @@ export async function createProduct(formData: FormData) {
     data: {
       name, description, details, url: url || null, imageUrl: imageUrl || null, gallery: galleryStr,
       referralCode, price, isPeripheral, featured, orderIndex, isHidden,
+      categoryId: categoryId || null,
     },
   });
 
@@ -182,6 +200,7 @@ export async function updateProduct(id: string, formData: FormData) {
   }
   
   const referralCode = formData.get("referralCode") as string | null;
+  const categoryId = formData.get("categoryId") as string | null;
   const priceStr = formData.get("price") as string | null;
   const price = priceStr ? parseFloat(priceStr) : null;
   const isPeripheral = formData.get("isPeripheral") === "on";
@@ -192,6 +211,7 @@ export async function updateProduct(id: string, formData: FormData) {
   const updateData: any = {
     name, description, details, url: url || null,
     referralCode, price, isPeripheral, featured, orderIndex, isHidden,
+    categoryId: categoryId || null,
   };
   
   if (imageUrl) updateData.imageUrl = imageUrl;

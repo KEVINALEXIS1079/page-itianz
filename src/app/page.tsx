@@ -4,17 +4,33 @@ import { PrismaClient } from '@prisma/client'
 import { ProductCard } from "@/components/ProductCard";
 import { ProjectCard } from "@/components/ProjectCard";
 import { PeripheralsAccordion } from "@/components/PeripheralsAccordion";
+import { NebulaBackground } from "@/components/NebulaBackground";
+
+export const dynamic = "force-dynamic";
 
 const prisma = new PrismaClient()
 
 async function getProjectImage(project: any) {
   if (project.imageUrl) return project.imageUrl;
   if (project.videoUrl) {
-    const ytMatch = project.videoUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
-    if (ytMatch && ytMatch[1]) {
-      return `https://img.youtube.com/vi/${ytMatch[1]}/maxresdefault.jpg`;
-    }
-    if (project.videoUrl.includes('tiktok.com')) {
+    if (project.videoUrl.includes('youtube.com') || project.videoUrl.includes('youtu.be')) {
+      const match = project.videoUrl.match(/[?&]v=([^&]+)/) || project.videoUrl.match(/youtu\.be\/([^?]+)/);
+      if (match && match[1]) {
+        return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
+      }
+    } else if (project.videoUrl.includes('artstation.com') || project.videoUrl.includes('instagram.com')) {
+      try {
+        const res = await fetch(project.videoUrl, { 
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+          signal: AbortSignal.timeout(3000)
+        });
+        if (res.ok) {
+          const html = await res.text();
+          const match = html.match(/<meta\s+(?:property|name)=["']og:image["']\s+content=["']([^"']+)["']/i);
+          if (match && match[1]) return match[1];
+        }
+      } catch(e) {}
+    } else if (project.videoUrl.includes('tiktok.com')) {
       try {
         const res = await fetch(`https://www.tiktok.com/oembed?url=${project.videoUrl}`);
         if (res.ok) {
@@ -81,11 +97,8 @@ export default async function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section id="hero" className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden z-10">
-        <div className="absolute inset-0 z-[-1] opacity-95 hero-bg-animation">
-           {/* Fallback dark overlay, the real animation comes from globals.css driftRealSpace if we apply it */}
-           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] z-10" />
-           <div className="absolute inset-0 bg-cover bg-center drift-bg" style={{backgroundImage: "url('/img/imagefondo.png')"}} />
-        </div>
+        <NebulaBackground />
+        <div className="absolute inset-0 z-[-1] bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none" />
         
         <h1 className="text-[clamp(4rem,8vw,9rem)] font-bold uppercase tracking-[-4px] mb-0 opacity-0 animate-[slideUpFade_1.2s_cubic-bezier(0.2,0.8,0.2,1)_forwards] text-white">
           ITIANZ<span className="text-primary">.</span>

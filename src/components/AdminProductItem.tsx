@@ -3,88 +3,91 @@
 import { useState } from "react";
 import { updateProduct, deleteProduct } from "@/app/actions";
 
-export function AdminProductItem({ product }: { product: any }) {
+export function AdminProductItem({ product, categories = [] }: { product: any, categories?: any[] }) {
   const [isEditing, setIsEditing] = useState(false);
 
   if (isEditing) {
     return (
-      <div className="bg-content1 border border-white/5 p-6 rounded-xl">
-        <h3 className="font-bold mb-4">Editar Producto</h3>
-        <form action={async (formData) => {
-          await updateProduct(product.id, formData);
-          setIsEditing(false);
-        }} className="flex flex-col gap-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1">
-              <label className="text-xs">Nombre</label>
-              <input type="text" name="name" defaultValue={product.name} required className="bg-default-100 p-2 rounded text-sm text-foreground" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-xs">Precio</label>
-              <input type="number" step="0.01" name="price" defaultValue={product.price || ""} className="bg-default-100 p-2 rounded text-sm text-foreground" />
-            </div>
+      <div className="bg-content2 p-4 rounded-xl border border-primary/50">
+        <form action={updateProduct.bind(null, product.id)} onSubmit={() => setIsEditing(false)} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Nombre</label>
+            <input type="text" name="name" defaultValue={product.name} required className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
           </div>
           
           <div className="flex flex-col gap-1">
-            <label className="text-xs">Descripción Corta</label>
-            <textarea name="description" defaultValue={product.description || ""} required className="bg-default-100 p-2 rounded text-sm text-foreground" />
+            <label className="text-sm font-medium">Categoría (Opcional)</label>
+            <select name="categoryId" defaultValue={product.categoryId || ""} className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground">
+              <option value="">-- Sin Categoría --</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium">Link Compra</label>
+              <input type="text" name="url" defaultValue={product.url || ""} className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium">Precio</label>
+              <input type="number" step="0.01" name="price" defaultValue={product.price || ""} className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+            </div>
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs">Detalles Completos (para el Modal)</label>
-            <textarea name="details" defaultValue={product.details || ""} className="bg-default-100 p-2 rounded text-sm text-foreground h-24" />
+            <label className="text-sm font-medium">Descripción</label>
+            <textarea name="description" defaultValue={product.description || ""} required className="bg-default-100 border-none rounded-lg p-2 text-sm min-h-[60px] text-foreground" />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1">
-              <label className="text-xs">URL del Producto (Compra)</label>
-              <input type="text" name="url" defaultValue={product.url || ""} className="bg-default-100 p-2 rounded text-sm text-foreground" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-xs">Código de Referido</label>
-              <input type="text" name="referralCode" defaultValue={product.referralCode || ""} className="bg-default-100 p-2 rounded text-sm text-foreground" />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1">
-              <label className="text-xs">URL de la Imagen (Alternativa)</label>
-              <input type="text" name="imageUrl" defaultValue={product.imageUrl || ""} className="bg-default-100 p-2 rounded text-sm text-foreground" />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-xs">Subir Imagen</label>
-              <input type="file" name="imageFile" accept="image/*" className="bg-default-100 p-2 rounded text-sm text-foreground" />
-            </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Detalles Extra</label>
+            <textarea name="details" defaultValue={product.details || ""} className="bg-default-100 border-none rounded-lg p-2 text-sm min-h-[60px] text-foreground" />
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-xs">Subir Galería Múltiple (Reemplazará la actual)</label>
-            <input type="file" name="galleryFiles" multiple accept="image/*" className="bg-default-100 p-2 rounded text-sm text-foreground" />
-            {product.gallery && <p className="text-xs text-primary mt-1">Ya tiene imágenes en galería.</p>}
+            <label className="text-sm font-medium">Nueva URL de Imagen</label>
+            <input type="text" name="imageUrl" defaultValue={product.imageUrl || ""} className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
           </div>
 
-          <div className="flex flex-wrap gap-4 items-center bg-default-100 p-3 rounded">
-            <label className="flex items-center gap-2 cursor-pointer text-sm">
-              <input type="checkbox" name="isPeripheral" defaultChecked={product.isPeripheral} className="rounded text-primary" />
-              Es Periférico
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">o Subir Archivo (reemplaza anterior)</label>
+            <input type="file" name="imageFile" accept="image/*" className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Subir Galería Múltiple (reemplaza actual)</label>
+            <input type="file" name="galleryFiles" multiple accept="image/*" className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium">Código Referido</label>
+            <input type="text" name="referralCode" defaultValue={product.referralCode || ""} className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+          </div>
+
+          <div className="flex flex-wrap gap-4 items-center bg-default-100 p-3 rounded-lg">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="isPeripheral" defaultChecked={product.isPeripheral} className="w-4 h-4 rounded text-primary bg-background border-none" />
+              <span className="text-sm">Periférico</span>
             </label>
-            <label className="flex items-center gap-2 cursor-pointer text-sm">
-              <input type="checkbox" name="featured" defaultChecked={product.featured} className="rounded text-primary" />
-              Destacado
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="featured" defaultChecked={product.featured} className="w-4 h-4 rounded text-primary bg-background border-none" />
+              <span className="text-sm">Destacado</span>
             </label>
-            <label className="flex items-center gap-2 cursor-pointer text-sm">
-              <input type="checkbox" name="isHidden" defaultChecked={product.isHidden} className="rounded text-danger" />
-              Ocultar (Borrado Lógico)
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="isHidden" defaultChecked={product.isHidden} className="w-4 h-4 rounded text-danger bg-background border-none" />
+              <span className="text-sm">Oculto</span>
             </label>
             <div className="flex items-center gap-2 text-sm ml-auto">
               <label>Orden:</label>
-              <input type="number" name="orderIndex" defaultValue={product.orderIndex} className="bg-background w-16 p-1 rounded text-center" />
+              <input type="number" name="orderIndex" defaultValue={product.orderIndex} className="bg-background w-16 p-1 rounded text-center border-none" />
             </div>
           </div>
 
           <div className="flex gap-2 justify-end mt-2">
-            <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 bg-default-200 rounded-lg text-sm font-medium">Cancelar</button>
-            <button type="submit" className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium">Guardar Cambios</button>
+            <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 text-default-500 hover:text-white transition-colors">Cancelar</button>
+            <button type="submit" className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90">Guardar</button>
           </div>
         </form>
       </div>

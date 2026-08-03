@@ -1,16 +1,31 @@
 import { PrismaClient } from '@prisma/client';
 import { ProjectCard } from "@/components/ProjectCard";
 
+export const dynamic = "force-dynamic";
+
 const prisma = new PrismaClient();
 
 async function getProjectImage(project: any) {
   if (project.imageUrl) return project.imageUrl;
   if (project.videoUrl) {
-    const ytMatch = project.videoUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
-    if (ytMatch && ytMatch[1]) {
-      return `https://img.youtube.com/vi/${ytMatch[1]}/maxresdefault.jpg`;
-    }
-    if (project.videoUrl.includes('tiktok.com')) {
+    if (project.videoUrl.includes('youtube.com') || project.videoUrl.includes('youtu.be')) {
+      const match = project.videoUrl.match(/[?&]v=([^&]+)/) || project.videoUrl.match(/youtu\.be\/([^?]+)/);
+      if (match && match[1]) {
+        return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
+      }
+    } else if (project.videoUrl.includes('artstation.com') || project.videoUrl.includes('instagram.com')) {
+      try {
+        const res = await fetch(project.videoUrl, { 
+          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' },
+          signal: AbortSignal.timeout(3000)
+        });
+        if (res.ok) {
+          const html = await res.text();
+          const match = html.match(/<meta\s+(?:property|name)=["']og:image["']\s+content=["']([^"']+)["']/i);
+          if (match && match[1]) return match[1];
+        }
+      } catch(e) {}
+    } else if (project.videoUrl.includes('tiktok.com')) {
       try {
         const res = await fetch(`https://www.tiktok.com/oembed?url=${project.videoUrl}`);
         if (res.ok) {
