@@ -1,0 +1,72 @@
+@import url('https://fonts.cdnfonts.com/css/garet');
+@import "tailwindcss";
+@import "@heroui/styles";
+
+@source "../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
+
+@theme {
+  --color-background: #0b0b0d;
+  --color-foreground: #ffffff;
+  --color-primary: #e63946;
+  --color-surface: #1a1a1e;
+  --color-text-secondary: #888890;
+  --font-sans: 'Garet', 'Inter', system-ui, sans-serif;
+}
+
+@layer base {
+  * { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Garet', 'Inter', system-ui, sans-serif; 
+  }
+  html { 
+    scroll-behavior: smooth; 
+  }
+  body { 
+    background-color: var(--color-background); 
+    color: var(--color-foreground); 
+    overflow-x: hidden; 
+    font-weight: 300; 
+  }
+}
+
+/* Reused Animations */
+@keyframes pulseLoader {
+    0%, 100% { opacity: 0.5; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.05); text-shadow: 0 0 20px rgba(230,57,70,0.5); }
+}
+
+@keyframes driftRealSpace { 
+    0% { 
+        background-position: center, 0px 0px, 0px 0px, center;
+        transform: scale(1);
+        filter: brightness(0.9);
+    } 
+    100% { 
+        background-position: center, -200px 400px, -100px 200px, center;
+        transform: scale(1.15) rotate(1deg);
+        filter: brightness(1.2);
+    } 
+}
+
+@keyframes slideUpFade {
+    0% { opacity: 0; transform: translateY(30px); filter: blur(4px); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes pulseShadow {
+    0% { box-shadow: 0 0 10px rgba(230, 57, 70, 0.4); }
+    50% { box-shadow: 0 0 25px rgba(230, 57, 70, 0.8); }
+    100% { box-shadow: 0 0 10px rgba(230, 57, 70, 0.4); }
+}
+
+.neon-divider {
+    width: 100%; 
+    height: 1px; 
+    background: linear-gradient(90deg, transparent 0%, rgba(230,57,70, 0.9) 50%, transparent 100%);
+    box-shadow: 0 0 15px rgba(230,57,70, 0.8), 0 0 30px rgba(230,57,70, 0.4);
+    margin: 0;
+    position: relative;
+    z-index: 10;
+}

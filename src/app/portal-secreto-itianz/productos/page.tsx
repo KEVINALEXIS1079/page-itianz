@@ -1,0 +1,100 @@
+import { PrismaClient } from "@prisma/client";
+import { createProduct } from "@/app/actions";
+import { AdminProductItem } from "@/components/AdminProductItem";
+
+const prisma = new PrismaClient();
+
+export default async function AdminProductos() {
+  const products = await prisma.product.findMany({ orderBy: { orderIndex: 'desc' } });
+
+  return (
+    <div>
+      <h1 className="text-3xl font-bold mb-8">Administrar Productos y Periféricos</h1>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Agregar Nuevo Elemento</h2>
+          <form action={createProduct} className="flex flex-col gap-4 bg-content1 p-6 rounded-xl border border-white/5">
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium">Nombre del Producto</label>
+              <input type="text" name="name" required className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium">Link de Compra</label>
+                <input type="text" name="url" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium">Precio (opcional)</label>
+                <input type="number" step="0.01" name="price" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium">Descripción Corta</label>
+              <textarea name="description" required className="bg-default-100 border-none rounded-lg p-3 text-sm min-h-[60px] text-foreground" />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium">Detalles (para el Modal)</label>
+              <textarea name="details" className="bg-default-100 border-none rounded-lg p-3 text-sm min-h-[100px] text-foreground" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium">URL de Imagen</label>
+                <input type="text" name="imageUrl" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm font-medium">o Subir Archivo</label>
+                <input type="file" name="imageFile" accept="image/*" className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium">Subir Galería Múltiple</label>
+              <input type="file" name="galleryFiles" multiple accept="image/*" className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-sm font-medium">Código de Referido (opcional)</label>
+              <input type="text" name="referralCode" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+            </div>
+
+            <div className="flex flex-wrap gap-4 items-center mt-2 bg-default-100 p-4 rounded-lg">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="isPeripheral" className="w-4 h-4 rounded text-primary bg-background border-none" />
+                <span className="text-sm">Periférico de mi setup</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="featured" className="w-4 h-4 rounded text-primary bg-background border-none" />
+                <span className="text-sm">Destacado (Inicio)</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" name="isHidden" className="w-4 h-4 rounded text-danger bg-background border-none" />
+                <span className="text-sm">Oculto</span>
+              </label>
+              <div className="flex items-center gap-2 text-sm ml-auto">
+                <label>Orden (mayor=primero):</label>
+                <input type="number" name="orderIndex" defaultValue="0" className="bg-background w-16 p-1 rounded text-center border-none" />
+              </div>
+            </div>
+            
+            <button type="submit" className="mt-4 bg-primary text-white font-medium py-3 rounded-lg hover:bg-primary/90 transition-colors">Crear Elemento</button>
+          </form>
+        </div>
+        
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Elementos Existentes</h2>
+          <div className="flex flex-col gap-4 max-h-[800px] overflow-y-auto pr-2 pb-10">
+            {products.map((product) => (
+              <AdminProductItem key={product.id} product={product} />
+            ))}
+            {products.length === 0 && <p className="text-default-500">No hay productos.</p>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
