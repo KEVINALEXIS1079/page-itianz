@@ -17,32 +17,32 @@ export default async function AdminProyectos() {
           <form action={createProject} className="flex flex-col gap-4 bg-content1 p-6 rounded-xl border border-white/5">
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Título</label>
-              <input type="text" name="title" required className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+              <input type="text" name="title" required className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
             
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Descripción</label>
-              <textarea name="description" required className="bg-default-100 border-none rounded-lg p-3 text-sm min-h-[100px] text-foreground" />
+              <textarea name="description" required className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm min-h-[100px] text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
             
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Tipo (ej. Edición, 3D)</label>
-              <input type="text" name="type" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+              <input type="text" name="type" className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
 
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">URL del Video (YouTube o TikTok)</label>
-              <input type="text" name="videoUrl" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+              <input type="text" name="videoUrl" className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">URL de Imagen</label>
-                <input type="text" name="imageUrl" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+                <input type="text" name="imageUrl" className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
               </div>
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">o Subir Archivo</label>
-                <input type="file" name="imageFile" accept="image/*" className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+                <input type="file" name="imageFile" accept="image/*" className="bg-[#2a2a30] border border-white/10 rounded-lg p-2 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
               </div>
             </div>
 
@@ -57,7 +57,7 @@ export default async function AdminProyectos() {
               </label>
               <div className="flex items-center gap-2 text-sm ml-auto">
                 <label>Orden (mayor=primero):</label>
-                <input type="number" name="orderIndex" defaultValue="0" className="bg-background w-16 p-1 rounded text-center border-none" />
+                <input type="number" name="orderIndex" defaultValue="0" className="bg-[#2a2a30] border border-white/10 focus:ring-2 focus:ring-primary focus:outline-none w-16 p-1 rounded text-center" />
               </div>
             </div>
             

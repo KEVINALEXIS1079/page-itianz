@@ -17,32 +17,32 @@ export function AdminProjectItem({ project }: { project: any }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
               <label className="text-xs">Título</label>
-              <input type="text" name="title" defaultValue={project.title} required className="bg-default-100 p-2 rounded text-sm text-foreground" />
+              <input type="text" name="title" defaultValue={project.title} required className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
             <div className="flex flex-col gap-1">
               <label className="text-xs">Tipo (VFX, 3D...)</label>
-              <input type="text" name="type" defaultValue={project.type || ""} className="bg-default-100 p-2 rounded text-sm text-foreground" />
+              <input type="text" name="type" defaultValue={project.type || ""} className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
           </div>
           
           <div className="flex flex-col gap-1">
             <label className="text-xs">Descripción</label>
-            <textarea name="description" defaultValue={project.description || ""} required className="bg-default-100 p-2 rounded text-sm text-foreground h-20" />
+            <textarea name="description" defaultValue={project.description || ""} required className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm min-h-[80px] text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
           </div>
 
           <div className="flex flex-col gap-1">
             <label className="text-xs">URL del Video (Youtube/TikTok)</label>
-            <input type="text" name="videoUrl" defaultValue={project.videoUrl || ""} className="bg-default-100 p-2 rounded text-sm text-foreground" />
+            <input type="text" name="videoUrl" defaultValue={project.videoUrl || ""} className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-1">
               <label className="text-xs">URL de la Imagen (Alternativa)</label>
-              <input type="text" name="imageUrl" defaultValue={project.imageUrl || ""} className="bg-default-100 p-2 rounded text-sm text-foreground" />
+              <input type="text" name="imageUrl" defaultValue={project.imageUrl || ""} className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
             <div className="flex flex-col gap-1">
               <label className="text-xs">Subir Imagen</label>
-              <input type="file" name="imageFile" accept="image/*" className="bg-default-100 p-2 rounded text-sm text-foreground" />
+              <input type="file" name="imageFile" accept="image/*" className="bg-[#2a2a30] border border-white/10 rounded-lg p-2 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
           </div>
 
@@ -57,7 +57,7 @@ export function AdminProjectItem({ project }: { project: any }) {
             </label>
             <div className="flex items-center gap-2 text-sm ml-auto">
               <label>Orden:</label>
-              <input type="number" name="orderIndex" defaultValue={project.orderIndex} className="bg-background w-16 p-1 rounded text-center" />
+              <input type="number" name="orderIndex" defaultValue={project.orderIndex} className="bg-[#2a2a30] border border-white/10 focus:ring-2 focus:ring-primary focus:outline-none w-16 p-1 rounded text-center" />
             </div>
           </div>
 

@@ -21,7 +21,7 @@ export default async function AdminProductos() {
               <form action={createCategory} className="flex gap-4 items-end mb-6">
                 <div className="flex-1 flex flex-col gap-1">
                   <label className="text-sm font-medium">Nueva Categoría</label>
-                  <input type="text" name="name" required className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" placeholder="Ej. Monitores, Sillas..." />
+                  <input type="text" name="name" required className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" placeholder="Ej. Monitores, Sillas..." />
                 </div>
                 <button type="submit" className="bg-primary text-white font-medium px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors">Crear</button>
               </form>
@@ -45,12 +45,12 @@ export default async function AdminProductos() {
             <form action={createProduct} className="flex flex-col gap-4 bg-content1 p-6 rounded-xl border border-white/5">
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">Nombre del Producto</label>
-                <input type="text" name="name" required className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+                <input type="text" name="name" required className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
               </div>
               
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">Categoría (Opcional)</label>
-                <select name="categoryId" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground">
+                <select name="categoryId" className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none">
                   <option value="">-- Sin Categoría --</option>
                   {categories.map(cat => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -61,43 +61,43 @@ export default async function AdminProductos() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">Link de Compra</label>
-                <input type="text" name="url" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+                <input type="text" name="url" className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
               </div>
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">Precio (opcional)</label>
-                <input type="number" step="0.01" name="price" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+                <input type="number" step="0.01" name="price" className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
               </div>
             </div>
 
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Descripción Corta</label>
-              <textarea name="description" required className="bg-default-100 border-none rounded-lg p-3 text-sm min-h-[60px] text-foreground" />
+              <textarea name="description" required className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm min-h-[60px] text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
 
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Detalles (para el Modal)</label>
-              <textarea name="details" className="bg-default-100 border-none rounded-lg p-3 text-sm min-h-[100px] text-foreground" />
+              <textarea name="details" className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm min-h-[100px] text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">URL de Imagen</label>
-                <input type="text" name="imageUrl" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+                <input type="text" name="imageUrl" className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
               </div>
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">o Subir Archivo</label>
-                <input type="file" name="imageFile" accept="image/*" className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+                <input type="file" name="imageFile" accept="image/*" className="bg-[#2a2a30] border border-white/10 rounded-lg p-2 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
               </div>
             </div>
 
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Subir Galería Múltiple</label>
-              <input type="file" name="galleryFiles" multiple accept="image/*" className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+              <input type="file" name="galleryFiles" multiple accept="image/*" className="bg-[#2a2a30] border border-white/10 rounded-lg p-2 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
 
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Código de Referido (opcional)</label>
-              <input type="text" name="referralCode" className="bg-default-100 border-none rounded-lg p-3 text-sm text-foreground" />
+              <input type="text" name="referralCode" className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
 
             <div className="flex flex-wrap gap-4 items-center mt-2 bg-default-100 p-4 rounded-lg">
@@ -115,7 +115,7 @@ export default async function AdminProductos() {
               </label>
               <div className="flex items-center gap-2 text-sm ml-auto">
                 <label>Orden (mayor=primero):</label>
-                <input type="number" name="orderIndex" defaultValue="0" className="bg-background w-16 p-1 rounded text-center border-none" />
+                <input type="number" name="orderIndex" defaultValue="0" className="bg-[#2a2a30] border border-white/10 focus:ring-2 focus:ring-primary focus:outline-none w-16 p-1 rounded text-center" />
               </div>
             </div>
             
