@@ -29,21 +29,18 @@ async function requireAdmin() {
   }
 }
 
-// Función auxiliar para subir archivos
+// Función auxiliar para subir archivos usando Vercel Blob
 async function saveFile(file: File | null): Promise<string | null> {
   if (!file || file.size === 0) return null;
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
-  
-  const uploadDir = path.join(process.cwd(), "public/uploads");
-  await fs.mkdir(uploadDir, { recursive: true });
   
   const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
   const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-  const filepath = path.join(uploadDir, filename);
   
-  await fs.writeFile(filepath, buffer);
-  return `/uploads/${filename}`;
+  // Sube el archivo a Vercel Blob
+  const { put } = await import('@vercel/blob');
+  const blob = await put(filename, file, { access: 'public' });
+  
+  return blob.url;
 }
 
 export async function createProject(formData: FormData) {
