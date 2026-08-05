@@ -87,7 +87,7 @@ function CinematicStudio() {
 export function NebulaBackground() {
   return (
     <div className="absolute inset-0 z-[-1] w-full h-full bg-[#000000]">
-      <Canvas camera={{ position: [0, 0, 15], fov: 50 }} dpr={[1, 2]} gl={{ antialias: true }}>
+      <Canvas camera={{ position: [0, 0, 15], fov: 50 }} dpr={[1, 1.2]} gl={{ antialias: false, powerPreference: "high-performance" }}>
         <color attach="background" args={['#000000']} />
         
         {/* Niebla empujada hacia atrás para que no oculte las estrellas */}
