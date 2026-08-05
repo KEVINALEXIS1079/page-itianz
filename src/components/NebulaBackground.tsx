@@ -100,7 +100,7 @@ export function NebulaBackground() {
         <CinematicStudio />
 
         {/* Post-procesamiento Premium (Bloom reducido para no quemar blancos) */}
-        <EffectComposer disableNormalPass>
+        <EffectComposer>
           <Bloom luminanceThreshold={1.2} mipmapBlur intensity={0.8} />
           <Noise opacity={0.02} />
           <Vignette eskil={false} offset={0.1} darkness={1.2} />
