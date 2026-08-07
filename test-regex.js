@@ -1,0 +1,1 @@
+const urls = ['https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'https://youtu.be/dQw4w9WgXcQ', 'https://www.youtube.com/shorts/dQw4w9WgXcQ']; urls.forEach(u => console.log(u.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([^&?\/]{11})/)?.[1]));

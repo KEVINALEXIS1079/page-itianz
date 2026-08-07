@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { createProject } from "@/app/actions";
 import { AdminProjectItem } from "@/components/AdminProjectItem";
+import { ImagePreviewInput } from "@/components/ImagePreviewInput";
 
 const prisma = new PrismaClient();
 
@@ -37,12 +38,16 @@ export default async function AdminProyectos() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1">
-                <label className="text-sm font-medium">URL de Imagen</label>
+                <label className="text-sm font-medium">URL de Imagen Principal</label>
                 <input type="text" name="imageUrl" className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
               </div>
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">o Subir Archivo</label>
-                <input type="file" name="imageFile" accept="image/*" className="bg-[#2a2a30] border border-white/10 rounded-lg p-2 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
+                <ImagePreviewInput name="imageFile" />
+              </div>
+              <div className="flex flex-col gap-1 md:col-span-2">
+                <label className="text-sm font-medium">Subir Galería de Proyecto (Múltiples fotos)</label>
+                <ImagePreviewInput name="galleryFiles" multiple={true} />
               </div>
             </div>
 

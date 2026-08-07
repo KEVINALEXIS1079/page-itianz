@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { updateProject, deleteProject } from "@/app/actions";
+import { ImagePreviewInput } from "@/components/ImagePreviewInput";
 
 export function AdminProjectItem({ project }: { project: any }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -41,8 +42,12 @@ export function AdminProjectItem({ project }: { project: any }) {
               <input type="text" name="imageUrl" defaultValue={project.imageUrl || ""} className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-xs">Subir Imagen</label>
-              <input type="file" name="imageFile" accept="image/*" className="bg-[#2a2a30] border border-white/10 rounded-lg p-2 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
+              <label className="text-xs">Subir Imagen Principal</label>
+              <ImagePreviewInput name="imageFile" />
+            </div>
+            <div className="flex flex-col gap-1 md:col-span-2">
+              <label className="text-xs">Subir Galería de Proyecto (Múltiples fotos)</label>
+              <ImagePreviewInput name="galleryFiles" multiple={true} />
             </div>
           </div>
 

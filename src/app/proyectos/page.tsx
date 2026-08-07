@@ -7,9 +7,15 @@ const prisma = new PrismaClient();
 
 async function getProjectImage(project: any) {
   if (project.imageUrl) return project.imageUrl;
+  if (project.gallery) {
+    try {
+      const gallery = JSON.parse(project.gallery);
+      if (gallery && gallery.length > 0) return gallery[0];
+    } catch(e) {}
+  }
   if (project.videoUrl) {
     if (project.videoUrl.includes('youtube.com') || project.videoUrl.includes('youtu.be')) {
-      const match = project.videoUrl.match(/[?&]v=([^&]+)/) || project.videoUrl.match(/youtu\.be\/([^?]+)/);
+      const match = project.videoUrl.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([^&?\/]{11})/);
       if (match && match[1]) {
         return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
       }

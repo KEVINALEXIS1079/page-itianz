@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { createProduct, createCategory, deleteCategory } from "@/app/actions";
 import { AdminProductItem } from "@/components/AdminProductItem";
+import { ImagePreviewInput } from "@/components/ImagePreviewInput";
 
 const prisma = new PrismaClient();
 
@@ -86,13 +87,13 @@ export default async function AdminProductos() {
               </div>
               <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium">o Subir Archivo</label>
-                <input type="file" name="imageFile" accept="image/*" className="bg-[#2a2a30] border border-white/10 rounded-lg p-2 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
+                <ImagePreviewInput name="imageFile" />
               </div>
             </div>
 
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium">Subir Galería Múltiple</label>
-              <input type="file" name="galleryFiles" multiple accept="image/*" className="bg-[#2a2a30] border border-white/10 rounded-lg p-2 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
+              <ImagePreviewInput name="galleryFiles" multiple={true} />
             </div>
 
             <div className="flex flex-col gap-1">

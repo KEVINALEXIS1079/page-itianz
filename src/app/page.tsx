@@ -7,6 +7,8 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProjectCard } from "@/components/ProjectCard";
 import { PeripheralsCarousel } from "@/components/PeripheralsCarousel";
 import { FadeInView } from "@/components/FadeInView";
+import { ClipsCarousel } from "@/components/ClipsCarousel";
+import { Collaborations } from "@/components/Collaborations";
 
 export const dynamic = "force-dynamic";
 
@@ -14,9 +16,15 @@ const prisma = new PrismaClient()
 
 async function getProjectImage(project: any) {
   if (project.imageUrl) return project.imageUrl;
+  if (project.gallery) {
+    try {
+      const gallery = JSON.parse(project.gallery);
+      if (gallery && gallery.length > 0) return gallery[0];
+    } catch(e) {}
+  }
   if (project.videoUrl) {
     if (project.videoUrl.includes('youtube.com') || project.videoUrl.includes('youtu.be')) {
-      const match = project.videoUrl.match(/[?&]v=([^&]+)/) || project.videoUrl.match(/youtu\.be\/([^?]+)/);
+      const match = project.videoUrl.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([^&?\/]{11})/);
       if (match && match[1]) {
         return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
       }
@@ -95,6 +103,12 @@ export default async function Home() {
     resolvedImage: await getProductImage(p)
   })));
 
+  const clips = await prisma.clip.findMany({
+    where: { isHidden: false },
+    take: 6,
+    orderBy: { orderIndex: 'desc' }
+  });
+
   return (
     <div className="flex flex-col min-h-screen">
       <section id="hero" className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden z-10 pointer-events-none">
@@ -111,9 +125,9 @@ export default async function Home() {
               <Link href="#portfolio" className="bg-primary text-white px-8 py-4 rounded-xl font-semibold shadow-[0_8px_25px_rgba(230,57,70,0.3)] hover:shadow-[0_10px_30px_rgba(230,57,70,0.5)] transition-all">
                 Ver mis trabajos
               </Link>
-              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=itianz.business@gmail.com" target="_blank" rel="noopener noreferrer" className="bg-white/5 backdrop-blur-md text-white border border-white/10 px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition-all">
+              <Link href="#contacto" className="bg-white/5 backdrop-blur-md text-white border border-white/10 px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition-all">
                 Contactar
-              </a>
+              </Link>
             </div>
           </FadeInView>
         </div>
@@ -254,14 +268,21 @@ export default async function Home() {
         </div>
       </section>
       
+      {/* Edición, Clips & Gaming Section */}
+      <ClipsCarousel clips={clips} />
+
       {/* Contact Section / Footer */}
-      <footer id="contacto" className="py-32 px-5 bg-[#050505] text-center flex flex-col items-center justify-center">
-        <div className="mb-32">
+      <footer id="contacto" className="pt-32 pb-8 px-5 bg-[#050505] text-center flex flex-col items-center justify-center overflow-hidden">
+        <div className="mb-20">
             <h2 className="text-[clamp(3rem,8vw,8rem)] font-semibold tracking-[-2px] text-white uppercase leading-tight mb-5 transition-all duration-500 hover:[text-shadow:0_0_30px_rgba(255,255,255,0.4)]">¿CREAMOS ALGO?</h2>
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=itianz.business@gmail.com" target="_blank" rel="noopener noreferrer" className="inline-block text-[clamp(1.2rem,3vw,2.5rem)] text-default-500 hover:text-white font-light relative group transition-colors">
                 itianz.business@gmail.com
                 <span className="absolute -bottom-2 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
             </a>
+        </div>
+
+        <div className="w-full mb-20">
+          <Collaborations />
         </div>
         
         <div className="w-full max-w-7xl flex flex-col sm:flex-row justify-between items-center border-t border-white/10 pt-8 gap-8">

@@ -46,6 +46,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/portal-secreto-itianz/productos" className={`font-medium px-4 py-2 rounded-lg transition-colors ${pathname === "/portal-secreto-itianz/productos" ? "bg-primary/10 text-primary" : "text-foreground hover:bg-default-100"}`}>
             Productos & Periféricos
           </Link>
+          <Link href="/portal-secreto-itianz/clips" className={`font-medium px-4 py-2 rounded-lg transition-colors ${pathname === "/portal-secreto-itianz/clips" ? "bg-primary/10 text-primary" : "text-foreground hover:bg-default-100"}`}>
+            Clips & Gaming
+          </Link>
           <Link href="/" className="mt-8 px-4 opacity-70 hover:opacity-100 text-foreground">
             &larr; Volver a la web
           </Link>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { updateProduct, deleteProduct } from "@/app/actions";
+import { ImagePreviewInput } from "@/components/ImagePreviewInput";
 
 export function AdminProductItem({ product, categories = [] }: { product: any, categories?: any[] }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -45,20 +46,20 @@ export function AdminProductItem({ product, categories = [] }: { product: any, c
             <label className="text-sm font-medium">Detalles Extra</label>
             <textarea name="details" defaultValue={product.details || ""} className="bg-default-100 border-none rounded-lg p-2 text-sm min-h-[60px] text-foreground" />
           </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">Nueva URL de Imagen</label>
-            <input type="text" name="imageUrl" defaultValue={product.imageUrl || ""} className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1">
+              <label className="text-xs">URL de la Imagen</label>
+              <input type="text" name="imageUrl" defaultValue={product.imageUrl || ""} className="bg-[#2a2a30] border border-white/10 rounded-lg p-3 text-sm text-foreground focus:ring-2 focus:ring-primary focus:outline-none" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-xs">Subir Imagen</label>
+              <ImagePreviewInput name="imageFile" />
+            </div>
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">o Subir Archivo (reemplaza anterior)</label>
-            <input type="file" name="imageFile" accept="image/*" className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium">Subir Galería Múltiple (reemplaza actual)</label>
-            <input type="file" name="galleryFiles" multiple accept="image/*" className="bg-default-100 border-none rounded-lg p-2 text-sm text-foreground" />
+            <label className="text-xs">Subir Galería Múltiple</label>
+            <ImagePreviewInput name="galleryFiles" multiple={true} />
           </div>
 
           <div className="flex flex-col gap-1">

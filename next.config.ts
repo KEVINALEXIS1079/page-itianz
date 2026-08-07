@@ -14,7 +14,10 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
       { protocol: 'https', hostname: 'img.youtube.com' },
       { protocol: 'https', hostname: '*.tiktokcdn.com' },
-      { protocol: 'https', hostname: '*.tiktokcdn-us.com' }
+      { protocol: 'https', hostname: '*.tiktokcdn-us.com' },
+      { protocol: 'https', hostname: 'scontent.cdninstagram.com' },
+      { protocol: 'https', hostname: '*.cdninstagram.com' },
+      { protocol: 'https', hostname: 'images.unsplash.com' }
     ],
   },
 };

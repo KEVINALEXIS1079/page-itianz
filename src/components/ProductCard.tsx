@@ -119,11 +119,11 @@ export function ProductCard({ item, resolvedImage }: { item: any, resolvedImage?
                   </div>
 
                   <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar">
-                    <p className="text-lg text-default-500 mb-4">{item.description}</p>
+                    <p className="text-lg text-default-500 mb-4 break-words">{item.description}</p>
                     {item.details && (
                       <div className="mt-6 pt-6 border-t border-white/5">
                         <h3 className="text-sm font-semibold text-white mb-2 uppercase tracking-wider">Más detalles</h3>
-                        <p className="text-default-400 whitespace-pre-wrap text-sm leading-relaxed">{item.details}</p>
+                        <p className="text-default-400 whitespace-pre-wrap break-words text-sm leading-relaxed">{item.details}</p>
                       </div>
                     )}
                   </div>

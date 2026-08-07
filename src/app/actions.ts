@@ -56,6 +56,14 @@ export async function createProject(formData: FormData) {
     imageUrl = await saveFile(imageFile);
   }
 
+  const galleryFiles = formData.getAll("galleryFiles") as File[];
+  const galleryUrls = [];
+  for (const file of galleryFiles) {
+    const u = await saveFile(file);
+    if (u) galleryUrls.push(u);
+  }
+  const galleryStr = galleryUrls.length > 0 ? JSON.stringify(galleryUrls) : null;
+
   const videoUrlRaw = formData.get("videoUrl") as string | null;
   const videoUrl = videoUrlSchema.parse(videoUrlRaw || "");
 
@@ -64,7 +72,7 @@ export async function createProject(formData: FormData) {
   const orderIndex = parseInt(formData.get("orderIndex") as string || "0", 10);
 
   await prisma.project.create({
-    data: { title, description, type, imageUrl: imageUrl || null, videoUrl: videoUrl || null, featured, orderIndex, isHidden },
+    data: { title, description, type, imageUrl: imageUrl || null, gallery: galleryStr, videoUrl: videoUrl || null, featured, orderIndex, isHidden },
   });
 
   revalidatePath("/");
@@ -84,6 +92,13 @@ export async function updateProject(id: string, formData: FormData) {
     imageUrl = await saveFile(imageFile);
   }
 
+  const galleryFiles = formData.getAll("galleryFiles") as File[];
+  const galleryUrls = [];
+  for (const file of galleryFiles) {
+    const u = await saveFile(file);
+    if (u) galleryUrls.push(u);
+  }
+
   const videoUrlRaw = formData.get("videoUrl") as string | null;
   const videoUrl = videoUrlSchema.parse(videoUrlRaw || "");
 
@@ -93,6 +108,7 @@ export async function updateProject(id: string, formData: FormData) {
 
   const updateData: any = { title, description, type, videoUrl: videoUrl || null, featured, orderIndex, isHidden };
   if (imageUrl) updateData.imageUrl = imageUrl;
+  if (galleryUrls.length > 0) updateData.gallery = JSON.stringify(galleryUrls);
 
   await prisma.project.update({
     where: { id },
@@ -232,4 +248,42 @@ export async function deleteProduct(id: string) {
   revalidatePath("/productos");
   revalidatePath("/perifericos");
   revalidatePath("/portal-secreto-itianz/productos");
+}
+
+export async function createClip(formData: FormData) {
+  await requireAdmin();
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const videoUrl = formData.get("videoUrl") as string;
+  const isHidden = formData.get("isHidden") === "on";
+  const orderIndex = parseInt(formData.get("orderIndex") as string || "0", 10);
+
+  await prisma.clip.create({
+    data: { title, description: description || null, videoUrl, isHidden, orderIndex }
+  });
+  revalidatePath("/");
+  revalidatePath("/portal-secreto-itianz/clips");
+}
+
+export async function updateClip(id: string, formData: FormData) {
+  await requireAdmin();
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const videoUrl = formData.get("videoUrl") as string;
+  const isHidden = formData.get("isHidden") === "on";
+  const orderIndex = parseInt(formData.get("orderIndex") as string || "0", 10);
+
+  await prisma.clip.update({
+    where: { id },
+    data: { title, description: description || null, videoUrl, isHidden, orderIndex }
+  });
+  revalidatePath("/");
+  revalidatePath("/portal-secreto-itianz/clips");
+}
+
+export async function deleteClip(id: string) {
+  await requireAdmin();
+  await prisma.clip.delete({ where: { id } });
+  revalidatePath("/");
+  revalidatePath("/portal-secreto-itianz/clips");
 }
