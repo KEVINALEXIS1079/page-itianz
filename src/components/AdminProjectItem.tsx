@@ -1,11 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { updateProject, deleteProject } from "@/app/actions";
 import { ImagePreviewInput } from "@/components/ImagePreviewInput";
 
 export function AdminProjectItem({ project }: { project: any }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [existingGallery, setExistingGallery] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (isEditing) {
+      try {
+        setExistingGallery(project.gallery ? JSON.parse(project.gallery) : []);
+      } catch (e) {
+        setExistingGallery([]);
+      }
+    }
+  }, [isEditing, project.gallery]);
+
+  const removeExistingImage = (index: number) => {
+    setExistingGallery(prev => prev.filter((_, i) => i !== index));
+  };
 
   if (isEditing) {
     return (
@@ -47,6 +62,29 @@ export function AdminProjectItem({ project }: { project: any }) {
             </div>
             <div className="flex flex-col gap-1 md:col-span-2">
               <label className="text-xs">Subir Galería de Proyecto (Múltiples fotos)</label>
+              
+              {existingGallery.length > 0 && (
+                <div className="mb-2 p-3 bg-black/30 rounded-lg border border-white/5">
+                  <p className="text-[11px] text-default-500 mb-2">Imágenes actualmente guardadas (haz clic en la X para quitarlas):</p>
+                  <div className="flex flex-wrap gap-2">
+                    {existingGallery.map((url, i) => (
+                      <div key={i} className="relative w-16 h-16 rounded-lg overflow-hidden border border-white/10 group">
+                        <img src={url} alt={`Saved ${i}`} className="object-cover w-full h-full" />
+                        <button
+                          type="button"
+                          onClick={() => removeExistingImage(i)}
+                          className="absolute top-1 right-1 bg-black/70 hover:bg-danger text-white rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all text-xs font-bold"
+                          title="Eliminar foto guardada"
+                        >
+                          &times;
+                        </button>
+                        <input type="hidden" name="existingGalleryUrls" value={url} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <ImagePreviewInput name="galleryFiles" multiple={true} />
             </div>
           </div>

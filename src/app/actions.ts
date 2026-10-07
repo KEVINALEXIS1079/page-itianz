@@ -93,10 +93,14 @@ export async function updateProject(id: string, formData: FormData) {
   }
 
   const galleryFiles = formData.getAll("galleryFiles") as File[];
-  const galleryUrls = [];
+  const existingGalleryUrls = formData.getAll("existingGalleryUrls") as string[];
+  const galleryUrls = [...existingGalleryUrls];
+
   for (const file of galleryFiles) {
-    const u = await saveFile(file);
-    if (u) galleryUrls.push(u);
+    if (file && file.size > 0) {
+      const u = await saveFile(file);
+      if (u) galleryUrls.push(u);
+    }
   }
 
   const videoUrlRaw = formData.get("videoUrl") as string | null;
@@ -108,7 +112,10 @@ export async function updateProject(id: string, formData: FormData) {
 
   const updateData: any = { title, description, type, videoUrl: videoUrl || null, featured, orderIndex, isHidden };
   if (imageUrl) updateData.imageUrl = imageUrl;
-  if (galleryUrls.length > 0) updateData.gallery = JSON.stringify(galleryUrls);
+  
+  // Siempre actualizamos la galería para poder borrar imágenes si se removieron todas.
+  // Si no se tocó nada, `existingGalleryUrls` traerá las mismas y no cambiará nada.
+  updateData.gallery = galleryUrls.length > 0 ? JSON.stringify(galleryUrls) : null;
 
   await prisma.project.update({
     where: { id },
@@ -206,10 +213,14 @@ export async function updateProduct(id: string, formData: FormData) {
   }
 
   const galleryFiles = formData.getAll("galleryFiles") as File[];
-  const galleryUrls = [];
+  const existingGalleryUrls = formData.getAll("existingGalleryUrls") as string[];
+  const galleryUrls = [...existingGalleryUrls];
+
   for (const file of galleryFiles) {
-    const u = await saveFile(file);
-    if (u) galleryUrls.push(u);
+    if (file && file.size > 0) {
+      const u = await saveFile(file);
+      if (u) galleryUrls.push(u);
+    }
   }
   
   const referralCode = formData.get("referralCode") as string | null;
@@ -228,7 +239,9 @@ export async function updateProduct(id: string, formData: FormData) {
   };
   
   if (imageUrl) updateData.imageUrl = imageUrl;
-  if (galleryUrls.length > 0) updateData.gallery = JSON.stringify(galleryUrls);
+  
+  // Siempre actualizamos la galería para poder borrar imágenes
+  updateData.gallery = galleryUrls.length > 0 ? JSON.stringify(galleryUrls) : null;
 
   await prisma.product.update({
     where: { id },
