@@ -2,8 +2,12 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export function SponsorWidget() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/portal-secreto-itianz")) return null;
+
   return (
     <motion.a
       href="https://bonoxs.com/co/Blood%20Strike_WW?utm_source=influencers&utm_medium=influ-tiktok&utm_campaign=influ-itianz-blood_strike-killer_combo-May2026"

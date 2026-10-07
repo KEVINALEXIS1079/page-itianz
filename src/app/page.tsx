@@ -159,7 +159,7 @@ export default async function Home() {
               <h2 className="text-4xl font-bold mb-4">Sobre Mí</h2>
               <h3 className="text-primary text-lg mb-6 tracking-[3px] uppercase font-semibold">3D · VFX Artist | Film Editing</h3>
               <p className="text-default-500 text-lg leading-relaxed mb-8">
-                Soy <strong className="text-foreground">itianz</strong>, un artista visual colombiano de 21 años, especializado en postproducción técnica, creación de contenido freelance y efectos visuales de alto impacto (VFX). Transformo ideas en piezas visuales inmersivas combinando diseño 3D y una edición con ritmo cinemático.
+                Soy <strong className="text-foreground">itianz</strong>, Artista Visual y Tecnólogo en Animación 3D de 21 años. Me dedico a combinar el diseño 3D con efectos visuales (VFX) y una postproducción impecable. Llevo los proyectos desde la idea inicial hasta el resultado final, encargándome del montaje, la corrección de color (color grading) y todos los detalles técnicos en DaVinci Resolve para entregar piezas audiovisuales de alto impacto.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div className="bg-content1 border border-white/5 p-5 rounded-xl flex items-center gap-4 hover:-translate-y-1 hover:border-white/10 hover:shadow-lg transition-all">
@@ -181,13 +181,6 @@ export default async function Home() {
           </FadeInView>
         </div>
       </section>
-
-      {/* Peripherals Carousel */}
-      {featuredPeripherals.length > 0 && (
-        <FadeInView direction="up">
-          <PeripheralsCarousel peripherals={featuredPeripherals} />
-        </FadeInView>
-      )}
 
       {/* Projects Portfolio */}
       <section id="portfolio" className="py-24 px-5 max-w-7xl mx-auto w-full">
@@ -218,6 +211,18 @@ export default async function Home() {
       </section>
 
       <div className="neon-divider" />
+
+      {/* VFX & Action Montages Section */}
+      <ClipsCarousel clips={clips} />
+
+      <div className="neon-divider" />
+
+      {/* Peripherals Carousel */}
+      {featuredPeripherals.length > 0 && (
+        <FadeInView direction="up">
+          <PeripheralsCarousel peripherals={featuredPeripherals} />
+        </FadeInView>
+      )}
 
       {/* Featured Products & Peripherals */}
       <section id="featured-products" className="py-24 px-5 bg-background overflow-hidden">
@@ -267,9 +272,6 @@ export default async function Home() {
           </FadeInView>
         </div>
       </section>
-      
-      {/* Edición, Clips & Gaming Section */}
-      <ClipsCarousel clips={clips} />
 
       {/* Contact Section / Footer */}
       <footer id="contacto" className="pt-32 pb-8 px-5 bg-[#050505] text-center flex flex-col items-center justify-center overflow-hidden">

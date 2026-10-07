@@ -17,8 +17,8 @@ const httpsUrl = z.string().url("Debe ser una URL válida").refine(val => val.st
 
 const videoUrlSchema = httpsUrl.refine(val => {
   if (!val) return true;
-  return val.includes("youtube.com") || val.includes("youtu.be") || val.includes("tiktok.com") || val.includes("instagram.com") || val.includes("artstation.com");
-}, { message: "El enlace debe ser de YouTube, TikTok, Instagram o Artstation" });
+  return val.includes("youtube.com") || val.includes("youtu.be") || val.includes("tiktok.com") || val.includes("instagram.com") || val.includes("artstation.com") || val.includes("vimeo.com");
+}, { message: "El enlace debe ser de YouTube, TikTok, Instagram, Artstation o Vimeo" });
 
 // Función auxiliar de seguridad
 const ADMIN_EMAILS = ["itianz.business@gmail.com", "bx57599@gmail.com"];

@@ -28,6 +28,11 @@ export function ClipsCarousel({ clips }: { clips: any[] }) {
     if (tkMatch && tkMatch[1]) {
       embedUrl = `https://www.tiktok.com/embed/v2/${tkMatch[1]}`;
     }
+  } else if (current.videoUrl?.includes("vimeo.com")) {
+    const vimeoMatch = current.videoUrl.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
+    if (vimeoMatch && vimeoMatch[1]) {
+      embedUrl = `https://player.vimeo.com/video/${vimeoMatch[1]}?title=0&byline=0&portrait=0`;
+    }
   }
 
   return (
@@ -35,10 +40,10 @@ export function ClipsCarousel({ clips }: { clips: any[] }) {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold mb-6 text-foreground tracking-tight">
-            Edición, Clips & Gaming
+            VFX & Action Montages
           </h2>
           <p className="text-default-500 text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-            Una mezcla de ritmo, efectos puros y acción. Desde edición dinámica de videos hasta montajes y jugadas clave.
+            Edición dinámica y de alto impacto. Una combinación de ritmo rápido, efectos visuales (VFX) y elementos 3D aplicados a secuencias de acción, diseñada para atrapar al espectador desde el primer segundo.
           </p>
           <div className="flex justify-center gap-6 text-default-400">
             <svg className="w-8 h-8 hover:text-white transition-colors cursor-pointer" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>

@@ -19,6 +19,7 @@ export function ProjectCard({ project, index, imageSrc }: { project: any, index:
 
   const isYoutube = project.videoUrl?.includes("youtube.com") || project.videoUrl?.includes("youtu.be");
   const isTiktok = project.videoUrl?.includes("tiktok.com");
+  const isVimeo = project.videoUrl?.includes("vimeo.com");
   
   let embedUrl = "";
   if (isYoutube) {
@@ -32,6 +33,11 @@ export function ProjectCard({ project, index, imageSrc }: { project: any, index:
       embedUrl = `https://www.tiktok.com/embed/v2/${tkMatch[1]}`;
     } else {
       embedUrl = project.videoUrl;
+    }
+  } else if (isVimeo) {
+    const vimeoMatch = project.videoUrl.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
+    if (vimeoMatch && vimeoMatch[1]) {
+      embedUrl = `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1&title=0&byline=0&portrait=0`;
     }
   }
 
