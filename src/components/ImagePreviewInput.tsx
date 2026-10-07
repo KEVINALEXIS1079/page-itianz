@@ -41,12 +41,12 @@ export function ImagePreviewInput({ name, multiple = false }: { name: string, mu
 
       for (const file of selectedFiles) {
         if (!file.type.startsWith("image/")) {
-          setErrorMsg(El archivo " + file.name + " no es una imagen válida. Solo se permiten imágenes.);
+          setErrorMsg(`El archivo "${file.name}" no es una imagen válida. Solo se permiten imágenes.`);
           hasError = true;
           break;
         }
         if (file.size > MAX_FILE_SIZE_BYTES) {
-          setErrorMsg(La imagen " + file.name + " excede el límite de  + MAX_FILE_SIZE_MB + MB.);
+          setErrorMsg(`La imagen "${file.name}" excede el límite de ${MAX_FILE_SIZE_MB}MB.`);
           hasError = true;
           break;
         }
@@ -56,7 +56,7 @@ export function ImagePreviewInput({ name, multiple = false }: { name: string, mu
       if (!hasError) {
         if (multiple) {
           if (files.length + validFiles.length > MAX_FILES) {
-            setErrorMsg(Solo puedes subir un máximo de  + MAX_FILES +  imágenes en la galería.);
+            setErrorMsg(`Solo puedes subir un máximo de ${MAX_FILES} imágenes en la galería.`);
           } else {
             setFiles(prev => [...prev, ...validFiles]);
           }
@@ -109,7 +109,7 @@ export function ImagePreviewInput({ name, multiple = false }: { name: string, mu
         <div className="flex flex-wrap gap-3 mt-2 p-3 bg-black/50 rounded-lg border border-white/5">
           {previews.map((url, i) => (
             <div key={i} className="relative w-20 h-20 rounded-lg overflow-hidden border border-white/10 group">
-              <Image src={url} alt={Preview  + i} fill className="object-cover" />
+              <Image src={url} alt={`Preview ${i}`} fill className="object-cover" />
               {/* Botón de eliminar (X) */}
               <button
                 type="button"
