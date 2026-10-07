@@ -3,9 +3,14 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 
+const MAX_FILES = 10;
+const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
 export function ImagePreviewInput({ name, multiple = false }: { name: string, multiple?: boolean }) {
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Generar URLs de previsualización cada vez que cambia el estado de files
@@ -28,14 +33,36 @@ export function ImagePreviewInput({ name, multiple = false }: { name: string, mu
   }, [files]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setErrorMsg(null);
     if (e.target.files && e.target.files.length > 0) {
-      const newFiles = Array.from(e.target.files);
-      if (multiple) {
-        // Acumular archivos si es múltiple
-        setFiles(prev => [...prev, ...newFiles]);
-      } else {
-        // Reemplazar si es único
-        setFiles(newFiles);
+      const selectedFiles = Array.from(e.target.files);
+      const validFiles: File[] = [];
+      let hasError = false;
+
+      for (const file of selectedFiles) {
+        if (!file.type.startsWith("image/")) {
+          setErrorMsg(El archivo " + file.name + " no es una imagen válida. Solo se permiten imágenes.);
+          hasError = true;
+          break;
+        }
+        if (file.size > MAX_FILE_SIZE_BYTES) {
+          setErrorMsg(La imagen " + file.name + " excede el límite de  + MAX_FILE_SIZE_MB + MB.);
+          hasError = true;
+          break;
+        }
+        validFiles.push(file);
+      }
+
+      if (!hasError) {
+        if (multiple) {
+          if (files.length + validFiles.length > MAX_FILES) {
+            setErrorMsg(Solo puedes subir un máximo de  + MAX_FILES +  imágenes en la galería.);
+          } else {
+            setFiles(prev => [...prev, ...validFiles]);
+          }
+        } else {
+          setFiles(validFiles.slice(0, 1));
+        }
       }
       
       // Limpiar el input para permitir seleccionar el mismo archivo de nuevo si se borró
@@ -45,6 +72,7 @@ export function ImagePreviewInput({ name, multiple = false }: { name: string, mu
 
   const removeFile = (indexToRemove: number) => {
     setFiles(prev => prev.filter((_, i) => i !== indexToRemove));
+    setErrorMsg(null); // Limpiar errores al borrar
   };
 
   return (
@@ -68,13 +96,20 @@ export function ImagePreviewInput({ name, multiple = false }: { name: string, mu
         onChange={handleFileChange}
         className="hidden"
       />
+
+      {/* Mensaje de error */}
+      {errorMsg && (
+        <div className="text-red-400 text-sm mt-1 bg-red-950/30 p-3 rounded-lg border border-red-500/20 flex items-center gap-2">
+          <span>⚠️</span> {errorMsg}
+        </div>
+      )}
       
       {/* Previsualizaciones */}
       {previews.length > 0 && (
         <div className="flex flex-wrap gap-3 mt-2 p-3 bg-black/50 rounded-lg border border-white/5">
           {previews.map((url, i) => (
             <div key={i} className="relative w-20 h-20 rounded-lg overflow-hidden border border-white/10 group">
-              <Image src={url} alt={`Preview ${i}`} fill className="object-cover" />
+              <Image src={url} alt={Preview  + i} fill className="object-cover" />
               {/* Botón de eliminar (X) */}
               <button
                 type="button"
