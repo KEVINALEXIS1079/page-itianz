@@ -12,6 +12,28 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://itianz.online"),
   title: "itianz. - 3D & VFX Artist",
   description: "Portafolio oficial de itianz. Especialista en 3D, VFX y edición cinemática.",
+  openGraph: {
+    title: "itianz. - 3D & VFX Artist",
+    description: "Portafolio oficial de itianz. Especialista en 3D, VFX y edición cinemática.",
+    url: "https://itianz.online",
+    siteName: "itianz. Portfolio",
+    images: [
+      {
+        url: "/img/img_perfil.png",
+        width: 800,
+        height: 1000,
+        alt: "itianz. - 3D & VFX Artist",
+      }
+    ],
+    locale: "es_ES",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "itianz. - 3D & VFX Artist",
+    description: "Portafolio oficial de itianz. Especialista en 3D, VFX y edición cinemática.",
+    images: ["/img/img_perfil.png"],
+  }
 };
 
 export default function RootLayout({
