@@ -9,6 +9,7 @@ import { SponsorWidget } from "@/components/SponsorWidget";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://itianz.online"),
   title: "itianz. - 3D & VFX Artist",
   description: "Portafolio oficial de itianz. Especialista en 3D, VFX y edición cinemática.",
 };
