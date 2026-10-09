@@ -117,7 +117,7 @@ export default async function Home() {
         <div className="absolute bottom-[15vh] flex flex-col items-center z-20 w-full px-5 pointer-events-none">
           <FadeInView delay={0.2} direction="up">
             <p className="text-[clamp(1rem,2vw,1.4rem)] font-normal text-default-500 max-w-[600px] tracking-[1px] mb-8">
-              VFX, Edición Dinámica & Highlights Gaming.
+              3D, VFX Montages y edición dinámica.
             </p>
           </FadeInView>
           <FadeInView delay={0.4} direction="up">
