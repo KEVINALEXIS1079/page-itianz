@@ -9,7 +9,7 @@ const LOGOS = [
   { id: 1, name: "Blood Strike", src: "/logos/bloodstrike logo (3).png" },
   { id: 2, name: "Delta Force", src: "/logos/deltaforce.png" },
   { id: 3, name: "TopUp", src: "/logos/topupblack.png" },
-  { id: 4, name: "Bonoxs", src: "/logos/bonox.png" },
+  { id: 4, name: "Wings Store", src: "/logos/wingsstore.png" },
 ];
 
 export function Collaborations() {
